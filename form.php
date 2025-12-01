@@ -30,13 +30,35 @@
     <div class="invalid-feedback">Lütfen soyad giriniz.</div>
   </div>
 
-  <div class="col-md-6">
-    <label class="form-label">Email</label>
-    <input type="email" class="form-control" required>
-    <div class="invalid-feedback">Geçerli bir email giriniz.</div>
-  </div>
 
- <div class="col-md-6">
+<div class="col-md-6">
+  <label class="form-label">Email</label>
+  <input 
+      type="email" 
+      class="form-control" 
+      required
+      pattern="^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|hotmail\.com|yahoo\.com|icloud\.com|yandex\.com)$"
+      title="Sadece Gmail, Outlook, Hotmail, Yahoo, iCloud veya Yandex email adresi girilebilir."
+      oninput="
+        const allowedDomains = ['gmail.com','outlook.com','hotmail.com','yahoo.com','icloud.com','yandex.com'];
+        let val = this.value;
+        if (val.includes('@')) {
+          let parts = val.split('@');
+          let domain = parts[1];
+
+          // Yazılan domain izinli bir domain değilse otomatik sil
+          if (domain && !allowedDomains.some(d => d.startsWith(domain))) {
+            this.value = parts[0] + '@' + domain.replace(/.*/, '');
+          }
+        }
+      "
+  >
+  <div class="invalid-feedback">
+    Sadece belirtilen email servisleri kullanılabilir.
+  </div>
+</div>
+
+<div class="col-md-6">
   <label class="form-label">Telefon Numarası</label>
   <input 
       type="text" 
@@ -45,6 +67,9 @@
       required
       pattern="^05[0-9]{9}$"
       title="Telefon numarası 05 ile başlamalı ve 11 haneli olmalıdır."
+      inputmode="numeric"
+      maxlength="11"
+      oninput="this.value = this.value.replace(/[^0-9]/g, '')"
   >
   <div class="invalid-feedback">Geçerli bir telefon numarası giriniz.</div>
 </div>

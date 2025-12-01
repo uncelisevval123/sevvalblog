@@ -1,3 +1,7 @@
+    .navbar .form-control,
+.navbar .btn {
+  height: 38px;
+}
 
     body {
         text-align: center;
